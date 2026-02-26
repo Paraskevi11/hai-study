@@ -1,6 +1,6 @@
 # hai-study
 Human-AI Interaction study examining decision revision and trust in AI during logical reasoning tasks.
-[README.md](https://github.com/user-attachments/files/25577369/README.md)
+
 # Human–AI Interaction Study
 
 This repository contains the web-based experimental implementation for an MSc thesis project investigating human interaction with AI systems during logical reasoning tasks.
