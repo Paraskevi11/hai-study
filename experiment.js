@@ -605,6 +605,25 @@ const timeline = [];
   choices: ["Finish"]
 });
 
-  jsPsych.run(timeline);
+  jsPsych.run(timeline).then(function() {
 
-})();
+  const fullData = jsPsych.data.get().values();
+
+  const payload = {
+    token: "HAI2026_SECURE",
+    participant_id: participantID,
+    age: jsPsych.data.get().filter({trial_type: "survey-html-form"}).values()[0]?.response?.age || "",
+    gender: jsPsych.data.get().filter({trial_type: "survey-html-form"}).values()[0]?.response?.gender || "",
+    education: jsPsych.data.get().filter({trial_type: "survey-html-form"}).values()[0]?.response?.education || "",
+    full_data: fullData
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbxyESoH5AH-s1a6NbVnHwnOP3i-12t4lIj7nmQwdLRB9b7GH-gWsYWybp31c4VOWxXK/exec", {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+});  
