@@ -225,11 +225,6 @@ function encouragementPage(messageHtml, tag) {
 
   const jsPsych = initJsPsych({
   on_finish: async () => {
-    // ---- Local download (keep for testing; you can disable later) ----
-    const csv = jsPsych.data.get().csv();
-    const fname = `study_data_${participant_id}.csv`;
-    downloadCSV(fname, csv);
-
     // ---- Send to Google Apps Script (online saving) ----
     const fullData = jsPsych.data.get().values();
 
