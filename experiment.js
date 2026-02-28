@@ -224,12 +224,41 @@ function encouragementPage(messageHtml, tag) {
 (async function run() {
 
   const jsPsych = initJsPsych({
-    on_finish: () => {
-      const csv = jsPsych.data.get().csv();
-      const fname = `study_data_${jsPsych.data.get().values()[0]?.participant_id || "P"}.csv`;
-      downloadCSV(fname, csv);
+  on_finish: async () => {
+    // ---- Local download (keep for testing; you can disable later) ----
+    const csv = jsPsych.data.get().csv();
+    const fname = `study_data_${participant_id}.csv`;
+    downloadCSV(fname, csv);
+
+    // ---- Send to Google Apps Script (online saving) ----
+    const fullData = jsPsych.data.get().values();
+
+    // demographics are the FIRST survey-html-form trial in your timeline
+    const demo = jsPsych.data.get().filter({ trial_type: "survey-html-form" }).values()[0]?.response || {};
+
+    const payload = {
+      token: "HAI2026_SECURE",
+      participant_id: participant_id,
+      age: demo.age || "",
+      gender: demo.gender || "",
+      education: demo.education || "",
+      full_data: fullData
+    };
+
+    try {
+      // Tip: Use text/plain to avoid CORS preflight issues with Apps Script
+      await fetch("https://script.google.com/macros/s/AKfycbxyESoH5AH-s1a6NbVnHwnOP3i-12t4lIj7nmQwdLRB9b7GH-gWsYWybp31c4VOWxXK/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      console.log("✅ Data sent to Google Apps Script");
+    } catch (err) {
+      console.error("❌ Failed to send data to Google Apps Script", err);
     }
-  });
+  }
+});
 
   // Wider content and readable buttons (injected styles)
 const styleTag = document.createElement("style");
@@ -587,10 +616,10 @@ const timeline = [];
 }
   });
 
-  /***************
-   DEBRIEF
-  ***************/
-  timeline.push({
+ /***************
+ DEBRIEF
+***************/
+timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
     <div style="text-align:left;">
@@ -605,25 +634,9 @@ const timeline = [];
   choices: ["Finish"]
 });
 
-  jsPsych.run(timeline).then(function() {
+// IMPORTANT: jsPsych.run() does NOT return a Promise in jsPsych 7,
+// so don't use .then(). Use on_finish instead.
+jsPsych.run(timeline);
 
-  const fullData = jsPsych.data.get().values();
-
-  const payload = {
-    token: "HAI2026_SECURE",
-    participant_id: participantID,
-    age: jsPsych.data.get().filter({trial_type: "survey-html-form"}).values()[0]?.response?.age || "",
-    gender: jsPsych.data.get().filter({trial_type: "survey-html-form"}).values()[0]?.response?.gender || "",
-    education: jsPsych.data.get().filter({trial_type: "survey-html-form"}).values()[0]?.response?.education || "",
-    full_data: fullData
-  };
-
-  fetch("https://script.google.com/macros/s/AKfycbxyESoH5AH-s1a6NbVnHwnOP3i-12t4lIj7nmQwdLRB9b7GH-gWsYWybp31c4VOWxXK/exec", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-
-});  
+// Close the async IIFE properly
+})(); 
