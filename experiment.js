@@ -375,12 +375,12 @@ const timeline = [];
         <p>For each item:</p>
         <ol>
           <li>You select an initial answer.</li>
-          <li>You rate your confidence (1–7).</li>
+          <li>You rate your confidence (1 to 7).</li>
           <li>An AI advisor provides a recommendation.</li>
           <li>You choose a final answer and rate confidence again.</li>
         </ol>
         <p>The AI may be correct or incorrect.</p>
-        <p>Attention: When you are asked to rate condifence on the confidence scale, you must click on a number on the scale regardless if there is a default option.</p>
+        <p>Attention: When you are asked to rate condifence on the confidence scale (1 to 7), with 1 being the lowest confidence and 7 being the highest confidence, you must click on any of the numbers. .</p>
       </div>
       `
     ],
