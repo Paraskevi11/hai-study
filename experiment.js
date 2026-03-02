@@ -380,7 +380,7 @@ const timeline = [];
           <li>You choose a final answer and rate confidence again.</li>
         </ol>
         <p>The AI may be correct or incorrect.</p>
-        <p>Attention: When you are asked to rate condifence on the confidence scale (1 to 7), with 1 being the lowest confidence and 7 being the highest confidence, you must click on any of the numbers. .</p>
+        <p>Attention: When you are asked to rate condifence on the confidence scale (1 to 7), with 1 being the lowest confidence and 7 being the highest confidence, you must click on any of the numbers.</p>
       </div>
       `
     ],
