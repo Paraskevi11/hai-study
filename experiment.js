@@ -492,24 +492,20 @@ const timeline = [];
       }
     });
 
-    // (2) Confidence (Initial)
+    // (2) Confidence (Initial) – 1–7 clickable buttons
     trials.push({
-      type: jsPsychHtmlSliderResponse,
+      type: jsPsychHtmlButtonResponse,
       stimulus: `
         <div style="text-align:left;">
           <h3>Confidence (Initial)</h3>
           <p>How confident are you in your answer?</p>
         </div>
       `,
-      min: 1,
-      max: 7,
-      start: 4,
-      step: 1,
-      labels: ["1","2","3","4","5","6","7"],
-      require_movement: true,
+      choices: ["1","2","3","4","5","6","7"],
       data: { ...baseData, stage: "initial_confidence" },
       on_finish: (data) => {
-        data.initial_confidence = data.response;
+        // Button index 0–6 → confidence 1–7
+        data.initial_confidence = (typeof data.response === "number") ? (data.response + 1) : null;
       }
     });
 
@@ -552,24 +548,20 @@ const timeline = [];
       }
     });
 
-    // (5) Confidence (Final)
+    // (5) Confidence (Final) – 1–7 clickable buttons
     trials.push({
-      type: jsPsychHtmlSliderResponse,
+      type: jsPsychHtmlButtonResponse,
       stimulus: `
         <div style="text-align:left;">
           <h3>Confidence (Final)</h3>
           <p>How confident are you in your final answer?</p>
         </div>
       `,
-      min: 1,
-      max: 7,
-      start: 4,
-      step: 1,
-      labels: ["1","2","3","4","5","6","7"],
-      require_movement: true,
+      choices: ["1","2","3","4","5","6","7"],
       data: { ...baseData, stage: "final_confidence" },
       on_finish: (data) => {
-        data.final_confidence = data.response;
+        // Button index 0–6 → confidence 1–7
+        data.final_confidence = (typeof data.response === "number") ? (data.response + 1) : null;
       }
     });
 
