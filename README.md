@@ -47,6 +47,5 @@ All data handling complies with GDPR principles of data minimization, anonymity,
 
 ## Author
 
-Paraskevi Papakyriakou  
+Paraskevi P.  
 MSc Thesis – Cognitive Systems  
-Open University of Cyprus
