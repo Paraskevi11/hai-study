@@ -620,24 +620,13 @@ timeline.push({
     <hr>
 
       <h3>SurveyCircle Credits</h3>
-      <p>Redeem the following Survey Code at 
-      <a href="https://www.surveycircle.com" target="_blank">SurveyCircle</a> 
-      to receive participation credits:</p>
-
-    <p style="font-size:18px;"><b>F347-12YE-K59H-ZVLL</b></p>
+      <p>Redeem the following Survey Code to receive participation credits:</p>
+      <p style="font-size:18px;"><b>F347-12YE-K59H-ZVLL</b></p>
 
     <hr>
 
       <h3>SurveySwap Credits</h3>
-      <p>You can claim your SurveySwap credits using the link below:</p>
-
-      <p>
-      <a href="https://surveyswap.io/sr/HRIB-XDON-UVQ7" target="_blank">
-      Claim SurveySwap Credits
-      </a>
-      </p>
-
-      <p>Or enter this code manually at SurveySwap:</p>
+      <p>Please enter this code manually at SurveySwap:</p>
       <p style="font-size:18px;"><b>HRIB-XDON-UVQ7</b></p>
 
       <br>
