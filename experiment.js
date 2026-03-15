@@ -223,41 +223,7 @@ function encouragementPage(messageHtml, tag) {
 // ===== Main =====
 (async function run() {
 
-  const jsPsych = initJsPsych({
-    on_finish: async () => {
-      // ---- Send to Google Apps Script (online saving) ----
-      // This format matches AppScript.gs: doPost(e)
-      const jsonText = jsPsych.data.get().json();
-
-      // demographics are the FIRST survey-html-form trial in your timeline
-      const demo =
-        jsPsych.data.get().filter({ trial_type: "survey-html-form" }).values()[0]
-          ?.response || {};
-
-      const payload = {
-        participant_id: participant_id,
-        age: demo.age || "",
-        gender: demo.gender || "",
-        education: demo.education || "",
-        json: jsonText
-      };
-
-      try {
-        await fetch(
-          "https://script.google.com/macros/s/AKfycbzPtJZeEKNu2WnZTQT2wroGFl_SOqFhzpjhEIpaneyaH6h2khudGTh1ppaFsAVRI-aX/exec",
-          {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(payload)
-          }
-        );
-        console.log("✅ Data sent to Google Apps Script");
-      } catch (err) {
-        console.error("❌ Failed to send data to Google Apps Script", err);
-      }
-    }
-  });
+  const jsPsych = initJsPsych({});
 
   // Wider content and readable buttons (injected styles)
 const styleTag = document.createElement("style");
@@ -608,10 +574,41 @@ const timeline = [];
   });
 
  /***************
- DEBRIEF
+ DEBRIEF — data is sent to Google Sheet as soon as this page is shown
 ***************/
+  function sendDataToGoogleSheet() {
+    const jsonText = jsPsych.data.get().json();
+    const demo =
+      jsPsych.data.get().filter({ trial_type: "survey-html-form" }).values()[0]
+        ?.response || {};
+    const payload = {
+      participant_id: participant_id,
+      age: demo.age || "",
+      gender: demo.gender || "",
+      education: demo.education || "",
+      json: jsonText
+    };
+    try {
+      fetch(
+        "https://script.google.com/macros/s/AKfycbzPtJZeEKNu2WnZTQT2wroGFl_SOqFhzpjhEIpaneyaH6h2khudGTh1ppaFsAVRI-aX/exec",
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        }
+      );
+      console.log("✅ Data sent to Google Apps Script");
+    } catch (err) {
+      console.error("❌ Failed to send data to Google Apps Script", err);
+    }
+  }
+
 timeline.push({
   type: jsPsychHtmlButtonResponse,
+  on_start: function () {
+    sendDataToGoogleSheet();
+  },
   stimulus: `
     <div style="text-align:left;">
       <h2>You did it!!! ヾ(⌐■_■)ノ♪</h2>
